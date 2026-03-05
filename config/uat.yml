@@ -1,20 +1,22 @@
 # UAT Environment Configuration
 # This file contains uat-specific settings for AWS Databricks
 
-variables:
-  workspace_host: "https://yyyyy.cloud.databricks.com"  # Replace with your AWS uat workspace URL
-  service_principal_client_id: "${env.DATABRICKS_CLIENT_ID}"
+targets:
+  uat:
+    variables:
+      workspace_host: "https://yyyyy.cloud.databricks.com"  # Replace with your AWS uat workspace URL
+      service_principal_client_id: "${env.DATABRICKS_CLIENT_ID}"
 
-  # UAT-specific variables
-  catalog_name: "uat_catalog"
-  schema_name: "uat_schema"
-  resource_prefix: "uat_"
+      # UAT-specific variables
+      catalog_name: "uat_catalog"
+      schema_name: "uat_schema"
+      resource_prefix: "uat_"
 
-  # Compute configurations (AWS instance types)
-  cluster_node_type: "i3.xlarge"  # AWS: 4 cores, 30.5 GB RAM
-  cluster_autoscale_min: 2
-  cluster_autoscale_max: 5
+      # Compute configurations (AWS instance types)
+      cluster_node_type: "i3.xlarge"  # AWS: 4 cores, 30.5 GB RAM
+      cluster_autoscale_min: 2
+      cluster_autoscale_max: 5
 
-  # Storage paths (S3 for AWS Databricks)
-  checkpoint_location: "s3://your-bucket/uat/checkpoints"  # Replace with your S3 bucket
-  data_location: "s3://your-bucket/uat/data"
+      # Storage paths (S3 for AWS Databricks)
+      checkpoint_location: "s3://your-bucket/uat/checkpoints"  # Replace with your S3 bucket
+      data_location: "s3://your-bucket/uat/data"

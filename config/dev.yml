@@ -1,20 +1,22 @@
 # Development Environment Configuration
 # This file contains dev-specific settings for AWS Databricks
 
-variables:
-  workspace_host: "https://xxxxx.cloud.databricks.com"  # Replace with your AWS dev workspace URL
-  service_principal_client_id: "${env.DATABRICKS_CLIENT_ID}"
+targets:
+  dev:
+    variables:
+      workspace_host: "https://xxxxx.cloud.databricks.com"  # Replace with your AWS dev workspace URL
+      service_principal_client_id: "${env.DATABRICKS_CLIENT_ID}"
 
-  # Dev-specific variables
-  catalog_name: "dev_catalog"
-  schema_name: "dev_schema"
-  resource_prefix: "dev_"
+      # Dev-specific variables
+      catalog_name: "dev_catalog"
+      schema_name: "dev_schema"
+      resource_prefix: "dev_"
 
-  # Compute configurations (AWS instance types)
-  cluster_node_type: "i3.xlarge"  # AWS: 4 cores, 30.5 GB RAM (or use r5.xlarge, m5.xlarge)
-  cluster_autoscale_min: 1
-  cluster_autoscale_max: 3
+      # Compute configurations (AWS instance types)
+      cluster_node_type: "i3.xlarge"  # AWS: 4 cores, 30.5 GB RAM (or use r5.xlarge, m5.xlarge)
+      cluster_autoscale_min: 1
+      cluster_autoscale_max: 3
 
-  # Storage paths (S3 for AWS Databricks)
-  checkpoint_location: "s3://your-bucket/dev/checkpoints"  # Replace with your S3 bucket
-  data_location: "s3://your-bucket/dev/data"
+      # Storage paths (S3 for AWS Databricks)
+      checkpoint_location: "s3://your-bucket/dev/checkpoints"  # Replace with your S3 bucket
+      data_location: "s3://your-bucket/dev/data"
