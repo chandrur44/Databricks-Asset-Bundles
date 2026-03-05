@@ -37,6 +37,9 @@ wheels/
 *~
 .DS_Store
 
+# Claude Code
+.claude/
+
 # Databricks
 .databricks/
 *.databricks
