@@ -60,7 +60,7 @@ jobs:
 
       - name: Validate Dev Configuration
         env:
-          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Validating dev environment..."
           echo "📋 Configuration Summary:"
@@ -74,7 +74,7 @@ jobs:
 
       - name: Validate UAT Configuration
         env:
-          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Validating uat environment..."
           echo "📋 Configuration Summary:"
@@ -85,7 +85,7 @@ jobs:
 
       - name: Validate Prod Configuration
         env:
-          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Validating prod environment..."
           echo "📋 Configuration Summary:"
@@ -125,7 +125,7 @@ jobs:
 
       - name: Deploy to Dev
         env:
-          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Deploying to Dev environment..."
           databricks bundle deploy -t dev -p DEV
@@ -172,7 +172,7 @@ jobs:
 
       - name: Deploy to UAT
         env:
-          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Deploying to UAT environment..."
           databricks bundle deploy -t uat -p UAT
@@ -219,7 +219,7 @@ jobs:
 
       - name: Deploy to Production
         env:
-          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "🚨 Deploying to PRODUCTION environment..."
           databricks bundle deploy -t prod -p PROD
