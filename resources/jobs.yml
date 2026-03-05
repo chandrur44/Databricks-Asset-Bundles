@@ -1,0 +1,115 @@
+# Databricks Jobs Configuration
+# Define all workflow jobs here
+
+resources:
+  jobs:
+    # Sample ETL Job
+    sample_etl_job:
+      name: "${var.resource_prefix}sample_etl_job"
+
+      # Job clusters configuration
+      job_clusters:
+        - job_cluster_key: main_cluster
+          new_cluster:
+            spark_version: "13.3.x-scala2.12"
+            node_type_id: ${var.cluster_node_type}
+            autoscale:
+              min_workers: ${var.cluster_autoscale_min}
+              max_workers: ${var.cluster_autoscale_max}
+            spark_conf:
+              "spark.databricks.delta.preview.enabled": "true"
+              "spark.databricks.delta.retentionDurationCheck.enabled": "false"
+
+      # Job tasks
+      tasks:
+        - task_key: bronze_ingestion
+          job_cluster_key: main_cluster
+          notebook_task:
+            notebook_path: ./src/notebooks/bronze_and_silver/bronze_ingestion.py
+            base_parameters:
+              environment: ${var.environment}
+              catalog: ${var.catalog_name}
+              schema: ${var.schema_name}
+
+        - task_key: silver_transformation
+          depends_on:
+            - task_key: bronze_ingestion
+          job_cluster_key: main_cluster
+          notebook_task:
+            notebook_path: ./src/notebooks/bronze_and_silver/silver_transformation.py
+            base_parameters:
+              environment: ${var.environment}
+              catalog: ${var.catalog_name}
+              schema: ${var.schema_name}
+
+        - task_key: gold_aggregation
+          depends_on:
+            - task_key: silver_transformation
+          job_cluster_key: main_cluster
+          notebook_task:
+            notebook_path: ./src/notebooks/gold/gold_aggregation.py
+            base_parameters:
+              environment: ${var.environment}
+              catalog: ${var.catalog_name}
+              schema: ${var.schema_name}
+
+      # Email notifications
+      email_notifications:
+        on_failure:
+          - data-engineering@company.com
+        on_success:
+          - data-engineering@company.com
+
+      # Schedule (optional - comment out if not needed)
+      schedule:
+        quartz_cron_expression: "0 0 2 * * ?"  # Daily at 2 AM
+        timezone_id: "UTC"
+        pause_status: "PAUSED"
+
+      # Timeout and retry settings
+      timeout_seconds: 7200
+      max_concurrent_runs: 1
+
+    # Sample Data Quality Job
+    data_quality_job:
+      name: "${var.resource_prefix}data_quality_job"
+
+      job_clusters:
+        - job_cluster_key: dq_cluster
+          new_cluster:
+            spark_version: "13.3.x-scala2.12"
+            node_type_id: ${var.cluster_node_type}
+            autoscale:
+              min_workers: 1
+              max_workers: 3
+
+      tasks:
+        - task_key: run_data_quality_checks
+          job_cluster_key: dq_cluster
+          notebook_task:
+            notebook_path: ./src/notebooks/bronze_and_silver/data_quality_checks.py
+            base_parameters:
+              environment: ${var.environment}
+              catalog: ${var.catalog_name}
+              schema: ${var.schema_name}
+
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"  # Daily at 6 AM
+        timezone_id: "UTC"
+        pause_status: "PAUSED"
+
+    # SQL Warehouse Query Job
+    sql_query_job:
+      name: "${var.resource_prefix}sql_query_job"
+
+      tasks:
+        - task_key: run_sql_query
+          sql_task:
+            warehouse_id: "${var.sql_warehouse_id}"
+            query:
+              query_id: "${resources.queries.sample_query.id}"
+
+      schedule:
+        quartz_cron_expression: "0 30 * * * ?"  # Every hour at 30 minutes past
+        timezone_id: "UTC"
+        pause_status: "PAUSED"

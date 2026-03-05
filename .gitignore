@@ -1,0 +1,89 @@
+# Databricks Asset Bundle - Git Ignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Databricks
+.databricks/
+*.databricks
+
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+*.secret
+secrets.yml
+secrets.json
+
+# Logs
+*.log
+logs/
+
+# Terraform (if using)
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+
+# DAB specific
+.bundle/
+.databricks-asset-bundle.yml
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+
+# Node modules (if any JS/TS tooling)
+node_modules/
+
+# Spark
+derby.log
+metastore_db/
+spark-warehouse/

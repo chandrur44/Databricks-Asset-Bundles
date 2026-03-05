@@ -1,0 +1,75 @@
+# Databricks SQL Queries Configuration
+# Define all SQL queries here for dashboards and reporting
+
+resources:
+  queries:
+    # Sample aggregate query
+    sample_query:
+      name: "${var.resource_prefix}Sample Aggregate Query"
+
+      description: "Sample query for aggregating daily metrics"
+
+      # Reference to SQL file
+      query: |
+        SELECT
+          date_trunc('day', timestamp) as date,
+          COUNT(*) as total_records,
+          SUM(amount) as total_amount,
+          AVG(amount) as avg_amount
+        FROM ${var.catalog_name}.${var.schema_name}.transactions
+        WHERE timestamp >= CURRENT_DATE - INTERVAL 30 DAYS
+        GROUP BY date_trunc('day', timestamp)
+        ORDER BY date DESC
+
+      # SQL Warehouse to run on
+      warehouse_id: "${var.sql_warehouse_id}"
+
+      # Parameters (optional)
+      parameters:
+        - name: days_back
+          title: "Days Back"
+          value: "30"
+
+    # Top customers query
+    top_customers_query:
+      name: "${var.resource_prefix}Top Customers"
+
+      description: "Query to find top customers by revenue"
+
+      query: |
+        SELECT
+          customer_id,
+          customer_name,
+          COUNT(DISTINCT order_id) as order_count,
+          SUM(order_amount) as total_revenue,
+          AVG(order_amount) as avg_order_value
+        FROM ${var.catalog_name}.${var.schema_name}.orders
+        WHERE order_date >= CURRENT_DATE - INTERVAL 90 DAYS
+        GROUP BY customer_id, customer_name
+        ORDER BY total_revenue DESC
+        LIMIT 100
+
+      warehouse_id: "${var.sql_warehouse_id}"
+
+    # Data quality metrics
+    data_quality_metrics:
+      name: "${var.resource_prefix}Data Quality Metrics"
+
+      description: "Monitor data quality across tables"
+
+      query: |
+        SELECT
+          table_name,
+          check_name,
+          check_result,
+          check_timestamp,
+          CASE
+            WHEN check_result = 'PASS' THEN 'green'
+            WHEN check_result = 'WARNING' THEN 'yellow'
+            ELSE 'red'
+          END as status_color
+        FROM ${var.catalog_name}.${var.schema_name}.data_quality_results
+        WHERE check_timestamp >= CURRENT_TIMESTAMP - INTERVAL 7 DAYS
+        ORDER BY check_timestamp DESC
+
+      warehouse_id: "${var.sql_warehouse_id}"

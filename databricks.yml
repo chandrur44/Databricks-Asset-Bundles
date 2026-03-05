@@ -1,0 +1,105 @@
+# Databricks Asset Bundle Configuration
+# This is the main configuration file for the DAB project
+# Environment-specific overrides are in the config/ directory
+
+bundle:
+  name: databricks-dab-project
+
+# Include environment-specific configurations
+include:
+  - resources/*.yml
+  - config/*.yml
+
+# Workspace configuration
+workspace:
+  host: ${var.workspace_host}
+
+# Artifacts configuration - files to be uploaded to Databricks
+artifacts:
+  notebooks:
+    type: notebook
+    path: ./src/notebooks
+
+  files:
+    type: file
+    path: ./src/files
+
+# Variables that can be overridden per environment
+variables:
+  # Workspace URL (will be set per environment)
+  workspace_host:
+    description: "Databricks workspace URL"
+
+  # Environment name
+  environment:
+    description: "Environment name (dev/uat/prod)"
+
+  # Service Principal Client ID
+  service_principal_client_id:
+    description: "Service Principal Client ID for deployment"
+
+  # Catalog name for Unity Catalog
+  catalog_name:
+    description: "Unity Catalog name"
+    default: "main"
+
+  # Schema/Database name
+  schema_name:
+    description: "Schema/Database name"
+    default: "default"
+
+  # Resource prefix for naming
+  resource_prefix:
+    description: "Prefix for resource names"
+    default: ""
+
+# Targets for different environments
+targets:
+  # Development environment
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: ${var.workspace_host}
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      environment: "dev"
+      catalog_name: "dev_catalog"
+      schema_name: "dev_schema"
+      resource_prefix: "dev_"
+    run_as:
+      service_principal_name: ${var.service_principal_client_id}
+
+  # UAT environment
+  uat:
+    mode: development
+    workspace:
+      host: ${var.workspace_host}
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      environment: "uat"
+      catalog_name: "uat_catalog"
+      schema_name: "uat_schema"
+      resource_prefix: "uat_"
+    run_as:
+      service_principal_name: ${var.service_principal_client_id}
+
+  # Production environment
+  prod:
+    mode: production
+    workspace:
+      host: ${var.workspace_host}
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      environment: "prod"
+      catalog_name: "prod_catalog"
+      schema_name: "prod_schema"
+      resource_prefix: "prod_"
+    run_as:
+      service_principal_name: ${var.service_principal_client_id}
+    # Production has stricter controls
+    permissions:
+      - level: CAN_VIEW
+        group_name: "data-analysts"
+      - level: CAN_RUN
+        group_name: "data-engineers"

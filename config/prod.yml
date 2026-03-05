@@ -1,0 +1,24 @@
+# Production Environment Configuration
+# This file contains prod-specific settings for AWS Databricks
+
+variables:
+  workspace_host: "https://zzzzz.cloud.databricks.com"  # Replace with your AWS prod workspace URL
+  service_principal_client_id: "${env.DATABRICKS_CLIENT_ID}"
+
+  # Production-specific variables
+  catalog_name: "prod_catalog"
+  schema_name: "prod_schema"
+  resource_prefix: "prod_"
+
+  # Compute configurations (larger for production) - AWS instance types
+  cluster_node_type: "i3.2xlarge"  # AWS: 8 cores, 61 GB RAM (or use r5.2xlarge, m5.2xlarge)
+  cluster_autoscale_min: 2
+  cluster_autoscale_max: 10
+
+  # Storage paths (S3 for AWS Databricks)
+  checkpoint_location: "s3://your-bucket/prod/checkpoints"  # Replace with your S3 bucket
+  data_location: "s3://your-bucket/prod/data"
+
+  # Production-specific settings
+  enable_autoscaling: true
+  enable_spot_instances: false

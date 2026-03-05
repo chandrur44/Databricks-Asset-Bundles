@@ -1,0 +1,92 @@
+# Databricks Delta Live Tables (DLT) Pipelines Configuration
+# Define all DLT pipelines here
+
+resources:
+  pipelines:
+    # Sample DLT Pipeline
+    sample_dlt_pipeline:
+      name: "${var.resource_prefix}sample_dlt_pipeline"
+
+      # Unity Catalog configuration
+      catalog: ${var.catalog_name}
+      target: ${var.schema_name}
+
+      # Pipeline configuration
+      configuration:
+        environment: ${var.environment}
+        checkpoint_location: ${var.checkpoint_location}/dlt_pipeline
+        pipelines.applyChangesPreviewEnabled: "true"
+
+      # Cluster configuration
+      clusters:
+        - label: default
+          autoscale:
+            min_workers: ${var.cluster_autoscale_min}
+            max_workers: ${var.cluster_autoscale_max}
+            mode: ENHANCED
+          spark_conf:
+            "spark.databricks.delta.preview.enabled": "true"
+
+      # Development mode (only for dev environment)
+      development: true
+
+      # Continuous or triggered
+      continuous: false
+
+      # Notebook libraries
+      libraries:
+        - notebook:
+            path: ./src/dlt/bronze_layer.py
+        - notebook:
+            path: ./src/dlt/silver_layer.py
+        - notebook:
+            path: ./src/dlt/gold_layer.py
+
+      # Email notifications
+      notifications:
+        - email_recipients:
+            - data-engineering@company.com
+          alerts:
+            - "on-update-failure"
+            - "on-update-fatal-failure"
+            - "on-flow-failure"
+
+      # Storage location
+      storage: "${var.data_location}/dlt/${bundle.target}"
+
+      # Channel for DLT version (CURRENT or PREVIEW)
+      channel: "CURRENT"
+
+    # Sample Streaming DLT Pipeline
+    streaming_dlt_pipeline:
+      name: "${var.resource_prefix}streaming_dlt_pipeline"
+
+      catalog: ${var.catalog_name}
+      target: "${var.schema_name}_streaming"
+
+      configuration:
+        environment: ${var.environment}
+        checkpoint_location: ${var.checkpoint_location}/streaming_dlt_pipeline
+
+      clusters:
+        - label: default
+          autoscale:
+            min_workers: 2
+            max_workers: 8
+            mode: ENHANCED
+
+      # Continuous streaming
+      continuous: true
+
+      libraries:
+        - notebook:
+            path: ./src/dlt/streaming_ingestion.py
+
+      notifications:
+        - email_recipients:
+            - data-engineering@company.com
+          alerts:
+            - "on-update-failure"
+
+      storage: "${var.data_location}/dlt_streaming/${bundle.target}"
+      channel: "CURRENT"
