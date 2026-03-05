@@ -59,6 +59,8 @@ jobs:
           databricks auth profiles
 
       - name: Validate Dev Configuration
+        env:
+          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Validating dev environment..."
           echo "📋 Configuration Summary:"
@@ -71,6 +73,8 @@ jobs:
           }
 
       - name: Validate UAT Configuration
+        env:
+          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Validating uat environment..."
           echo "📋 Configuration Summary:"
@@ -80,6 +84,8 @@ jobs:
           }
 
       - name: Validate Prod Configuration
+        env:
+          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Validating prod environment..."
           echo "📋 Configuration Summary:"
