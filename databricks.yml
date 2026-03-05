@@ -15,16 +15,18 @@ include:
 # Notebooks will be stored in /Workspace/databricks-dab-project/{env}/
 workspace:
   root_path: /Workspace/${bundle.name}/${bundle.target}
+  file_path: /Workspace/${bundle.name}/${bundle.target}/files
 
-# Artifacts configuration - files to be uploaded to Databricks
-artifacts:
-  notebooks:
-    type: notebook
-    path: ./src/notebooks
+# Sync configuration - upload notebooks and files to workspace
+sync:
+  include:
+    - src/**
 
-  files:
-    type: file
-    path: ./src/files
+# Note: Artifacts are only for Python wheels (.whl) and JAR files
+# artifacts:
+#   default:
+#     type: whl
+#     path: ./dist/*.whl
 
 # Variables that can be overridden per environment
 # Note: Workspace host is configured via DATABRICKS_HOST environment variable

@@ -36,11 +36,11 @@ resources:
       # Notebook libraries
       libraries:
         - notebook:
-            path: ./src/dlt/bronze_layer.py
+            path: ${workspace.file_path}/src/dlt/bronze_layer.py
         - notebook:
-            path: ./src/dlt/silver_layer.py
+            path: ${workspace.file_path}/src/dlt/silver_layer.py
         - notebook:
-            path: ./src/dlt/gold_layer.py
+            path: ${workspace.file_path}/src/dlt/gold_layer.py
 
       # Email notifications
       notifications:
@@ -80,7 +80,7 @@ resources:
 
       libraries:
         - notebook:
-            path: ./src/dlt/streaming_ingestion.py
+            path: ${workspace.file_path}/src/dlt/streaming_ingestion.py
 
       notifications:
         - email_recipients:
