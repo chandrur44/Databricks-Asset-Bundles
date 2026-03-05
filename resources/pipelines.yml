@@ -27,8 +27,8 @@ resources:
           spark_conf:
             "spark.databricks.delta.preview.enabled": "true"
 
-      # Development mode (only for dev environment)
-      development: true
+      # Development mode - set to false for production mode targets
+      development: false
 
       # Continuous or triggered
       continuous: false
