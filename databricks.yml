@@ -94,7 +94,7 @@ variables:
 targets:
   # Development environment
   dev:
-    mode: development
+    mode: production
     default: true
     workspace:
       root_path: /Workspace/${bundle.name}/${bundle.target}
@@ -108,7 +108,7 @@ targets:
 
   # UAT environment
   uat:
-    mode: development
+    mode: production
     workspace:
       root_path: /Workspace/${bundle.name}/${bundle.target}
     variables:

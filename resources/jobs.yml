@@ -98,18 +98,18 @@ resources:
         timezone_id: "UTC"
         pause_status: "PAUSED"
 
-    # SQL Warehouse Query Job
-    sql_query_job:
-      name: "${var.resource_prefix}sql_query_job"
-
-      tasks:
-        - task_key: run_sql_query
-          sql_task:
-            warehouse_id: "${var.sql_warehouse_id}"
-            query:
-              query_id: "${resources.queries.sample_query.id}"
-
-      schedule:
-        quartz_cron_expression: "0 30 * * * ?"  # Every hour at 30 minutes past
-        timezone_id: "UTC"
-        pause_status: "PAUSED"
+    # SQL Warehouse Query Job - Commented out (queries not fully supported in DAB)
+    # Uncomment and configure when needed
+    # sql_query_job:
+    #   name: "${var.resource_prefix}sql_query_job"
+    #   tasks:
+    #     - task_key: run_sql_query
+    #       sql_task:
+    #         warehouse_id: "${var.sql_warehouse_id}"
+    #         query:
+    #           # Use inline SQL instead of query_id since queries.yml is not included
+    #           query: "SELECT * FROM ${var.catalog_name}.${var.schema_name}.sample_table LIMIT 10"
+    #   schedule:
+    #     quartz_cron_expression: "0 30 * * * ?"
+    #     timezone_id: "UTC"
+    #     pause_status: "PAUSED"
