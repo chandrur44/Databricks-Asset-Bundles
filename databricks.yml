@@ -53,6 +53,37 @@ variables:
     description: "Prefix for resource names"
     default: ""
 
+  # Compute configurations
+  cluster_node_type:
+    description: "Node type for cluster instances"
+    default: "i3.xlarge"
+
+  cluster_autoscale_min:
+    description: "Minimum number of workers for autoscaling"
+    default: 1
+
+  cluster_autoscale_max:
+    description: "Maximum number of workers for autoscaling"
+    default: 3
+
+  # Storage paths
+  checkpoint_location:
+    description: "S3 path for DLT checkpoints"
+    default: "s3://your-bucket/checkpoints"
+
+  data_location:
+    description: "S3 path for data storage"
+    default: "s3://your-bucket/data"
+
+  # Additional cluster settings
+  enable_autoscaling:
+    description: "Enable cluster autoscaling"
+    default: true
+
+  enable_spot_instances:
+    description: "Enable spot instances for cost savings"
+    default: false
+
 # Targets for different environments
 targets:
   # Development environment
