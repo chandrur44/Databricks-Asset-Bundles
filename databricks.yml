@@ -13,7 +13,7 @@ include:
 # Workspace configuration
 # Note: host is set via DATABRICKS_HOST environment variable in GitHub Actions
 workspace:
-  root_path: ~/.bundle/${bundle.name}/${bundle.target}
+  root_path: /Workspace/${bundle.name}/${bundle.target}
 
 # Artifacts configuration - files to be uploaded to Databricks
 artifacts:
@@ -89,7 +89,7 @@ targets:
     mode: development
     default: true
     workspace:
-      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/${bundle.name}/${bundle.target}
     variables:
       environment: "dev"
       catalog_name: "dev_catalog"
@@ -102,7 +102,7 @@ targets:
   uat:
     mode: development
     workspace:
-      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/${bundle.name}/${bundle.target}
     variables:
       environment: "uat"
       catalog_name: "uat_catalog"
@@ -115,7 +115,7 @@ targets:
   prod:
     mode: production
     workspace:
-      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/${bundle.name}/${bundle.target}
     variables:
       environment: "prod"
       catalog_name: "prod_catalog"
