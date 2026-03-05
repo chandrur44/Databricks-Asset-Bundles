@@ -5,7 +5,7 @@
 targets:
   uat:
     variables:
-      service_principal_client_id: "${env.DATABRICKS_CLIENT_ID}"
+      # service_principal_client_id is set via DATABRICKS_BUNDLE_VAR_service_principal_client_id env var
 
       # UAT-specific variables
       catalog_name: "uat_catalog"

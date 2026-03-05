@@ -119,7 +119,7 @@ jobs:
 
       - name: Deploy to Dev
         env:
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Deploying to Dev environment..."
           databricks bundle deploy -t dev -p DEV
@@ -166,7 +166,7 @@ jobs:
 
       - name: Deploy to UAT
         env:
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "Deploying to UAT environment..."
           databricks bundle deploy -t uat -p UAT
@@ -213,7 +213,7 @@ jobs:
 
       - name: Deploy to Production
         env:
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_BUNDLE_VAR_service_principal_client_id: ${{ secrets.DATABRICKS_CLIENT_ID }}
         run: |
           echo "🚨 Deploying to PRODUCTION environment..."
           databricks bundle deploy -t prod -p PROD
