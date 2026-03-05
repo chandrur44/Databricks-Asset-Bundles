@@ -11,8 +11,9 @@ include:
   - config/*.yml
 
 # Workspace configuration
+# Note: host is set via DATABRICKS_HOST environment variable in GitHub Actions
 workspace:
-  host: ${var.workspace_host}
+  root_path: ~/.bundle/${bundle.name}/${bundle.target}
 
 # Artifacts configuration - files to be uploaded to Databricks
 artifacts:
@@ -25,11 +26,8 @@ artifacts:
     path: ./src/files
 
 # Variables that can be overridden per environment
+# Note: Workspace host is configured via DATABRICKS_HOST environment variable
 variables:
-  # Workspace URL (will be set per environment)
-  workspace_host:
-    description: "Databricks workspace URL"
-
   # Environment name
   environment:
     description: "Environment name (dev/uat/prod)"
@@ -91,7 +89,6 @@ targets:
     mode: development
     default: true
     workspace:
-      host: ${var.workspace_host}
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     variables:
       environment: "dev"
@@ -105,7 +102,6 @@ targets:
   uat:
     mode: development
     workspace:
-      host: ${var.workspace_host}
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
     variables:
       environment: "uat"
@@ -119,7 +115,6 @@ targets:
   prod:
     mode: production
     workspace:
-      host: ${var.workspace_host}
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
     variables:
       environment: "prod"

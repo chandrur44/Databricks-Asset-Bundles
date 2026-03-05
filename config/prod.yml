@@ -1,10 +1,10 @@
 # Production Environment Configuration
 # This file contains prod-specific settings for AWS Databricks
+# Note: Workspace host is set via DATABRICKS_PROD_HOST environment variable in GitHub Actions
 
 targets:
   prod:
     variables:
-      workspace_host: "https://zzzzz.cloud.databricks.com"  # Replace with your AWS prod workspace URL
       service_principal_client_id: "${env.DATABRICKS_CLIENT_ID}"
 
       # Production-specific variables

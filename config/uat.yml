@@ -1,10 +1,10 @@
 # UAT Environment Configuration
 # This file contains uat-specific settings for AWS Databricks
+# Note: Workspace host is set via DATABRICKS_UAT_HOST environment variable in GitHub Actions
 
 targets:
   uat:
     variables:
-      workspace_host: "https://yyyyy.cloud.databricks.com"  # Replace with your AWS uat workspace URL
       service_principal_client_id: "${env.DATABRICKS_CLIENT_ID}"
 
       # UAT-specific variables

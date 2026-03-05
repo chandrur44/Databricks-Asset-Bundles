@@ -1,10 +1,10 @@
 # Development Environment Configuration
 # This file contains dev-specific settings for AWS Databricks
+# Note: Workspace host is set via DATABRICKS_DEV_HOST environment variable in GitHub Actions
 
 targets:
   dev:
     variables:
-      workspace_host: "https://xxxxx.cloud.databricks.com"  # Replace with your AWS dev workspace URL
       service_principal_client_id: "${env.DATABRICKS_CLIENT_ID}"
 
       # Dev-specific variables
