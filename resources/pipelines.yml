@@ -51,8 +51,8 @@ resources:
             - "on-update-fatal-failure"
             - "on-flow-failure"
 
-      # Storage location
-      storage: "${var.data_location}/dlt/${bundle.target}"
+      # Storage location is managed by Unity Catalog (catalog field above)
+      # storage: "${var.data_location}/dlt/${bundle.target}"  # Cannot use with Unity Catalog
 
       # Channel for DLT version (CURRENT or PREVIEW)
       channel: "CURRENT"
@@ -88,5 +88,6 @@ resources:
           alerts:
             - "on-update-failure"
 
-      storage: "${var.data_location}/dlt_streaming/${bundle.target}"
+      # Storage location is managed by Unity Catalog (catalog field above)
+      # storage: "${var.data_location}/dlt_streaming/${bundle.target}"  # Cannot use with Unity Catalog
       channel: "CURRENT"
