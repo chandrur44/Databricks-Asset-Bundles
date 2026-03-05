@@ -35,32 +35,43 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
           databricks --version
 
+      - name: Configure Databricks Authentication
+        run: |
+          mkdir -p ~/.databricks
+          cat > ~/.databrickscfg <<EOL
+          [DEV]
+          host = ${{ secrets.DATABRICKS_DEV_HOST }}
+          client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}
+          client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+          [UAT]
+          host = ${{ secrets.DATABRICKS_UAT_HOST }}
+          client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}
+          client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+          [PROD]
+          host = ${{ secrets.DATABRICKS_PROD_HOST }}
+          client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}
+          client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          EOL
+          chmod 600 ~/.databrickscfg
+          echo "✅ Databricks authentication profiles configured"
+          databricks auth profiles
+
       - name: Validate Dev Configuration
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_DEV_HOST }}
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: |
           echo "Validating dev environment..."
-          databricks bundle validate -t dev
+          databricks bundle validate -t dev -p DEV
 
       - name: Validate UAT Configuration
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_UAT_HOST }}
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: |
           echo "Validating uat environment..."
-          databricks bundle validate -t uat
+          databricks bundle validate -t uat -p UAT
 
       - name: Validate Prod Configuration
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: |
           echo "Validating prod environment..."
-          databricks bundle validate -t prod
+          databricks bundle validate -t prod -p PROD
 
   # Deploy to Dev (automatic on develop branch)
   deploy-dev:
@@ -79,14 +90,22 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
           databricks --version
 
+      - name: Configure Databricks Authentication
+        run: |
+          mkdir -p ~/.databricks
+          cat > ~/.databrickscfg <<EOL
+          [DEV]
+          host = ${{ secrets.DATABRICKS_DEV_HOST }}
+          client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}
+          client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          EOL
+          chmod 600 ~/.databrickscfg
+          echo "✅ Databricks authentication configured for DEV"
+
       - name: Deploy to Dev
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_DEV_HOST }}
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: |
           echo "Deploying to Dev environment..."
-          databricks bundle deploy -t dev
+          databricks bundle deploy -t dev -p DEV
           echo "✅ Deployment to Dev completed successfully"
 
       - name: Post Deployment Info
@@ -116,14 +135,22 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
           databricks --version
 
+      - name: Configure Databricks Authentication
+        run: |
+          mkdir -p ~/.databricks
+          cat > ~/.databrickscfg <<EOL
+          [UAT]
+          host = ${{ secrets.DATABRICKS_UAT_HOST }}
+          client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}
+          client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          EOL
+          chmod 600 ~/.databrickscfg
+          echo "✅ Databricks authentication configured for UAT"
+
       - name: Deploy to UAT
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_UAT_HOST }}
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: |
           echo "Deploying to UAT environment..."
-          databricks bundle deploy -t uat
+          databricks bundle deploy -t uat -p UAT
           echo "✅ Deployment to UAT completed successfully"
 
       - name: Post Deployment Info
@@ -153,14 +180,22 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
           databricks --version
 
+      - name: Configure Databricks Authentication
+        run: |
+          mkdir -p ~/.databricks
+          cat > ~/.databrickscfg <<EOL
+          [PROD]
+          host = ${{ secrets.DATABRICKS_PROD_HOST }}
+          client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}
+          client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          EOL
+          chmod 600 ~/.databrickscfg
+          echo "✅ Databricks authentication configured for PROD"
+
       - name: Deploy to Production
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: |
           echo "🚨 Deploying to PRODUCTION environment..."
-          databricks bundle deploy -t prod
+          databricks bundle deploy -t prod -p PROD
           echo "✅ Deployment to Production completed successfully"
 
       - name: Post Deployment Info
