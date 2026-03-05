@@ -11,7 +11,8 @@ include:
   - config/*.yml
 
 # Workspace configuration
-# Note: host is set via DATABRICKS_HOST environment variable in GitHub Actions
+# Note: Host is configured via authentication profile in GitHub Actions
+# Notebooks will be stored in /Workspace/databricks-dab-project/{env}/
 workspace:
   root_path: /Workspace/${bundle.name}/${bundle.target}
 
