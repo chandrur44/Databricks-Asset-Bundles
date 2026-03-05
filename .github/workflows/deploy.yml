@@ -61,17 +61,32 @@ jobs:
       - name: Validate Dev Configuration
         run: |
           echo "Validating dev environment..."
-          databricks bundle validate -t dev -p DEV
+          echo "📋 Configuration Summary:"
+          databricks bundle validate -t dev -p DEV || {
+            echo "❌ Validation failed!"
+            echo "Checking for common issues..."
+            echo "Variables defined in databricks.yml:"
+            grep -A 1 "^  [a-z_]*:" databricks.yml | head -20 || true
+            exit 1
+          }
 
       - name: Validate UAT Configuration
         run: |
           echo "Validating uat environment..."
-          databricks bundle validate -t uat -p UAT
+          echo "📋 Configuration Summary:"
+          databricks bundle validate -t uat -p UAT || {
+            echo "❌ Validation failed!"
+            exit 1
+          }
 
       - name: Validate Prod Configuration
         run: |
           echo "Validating prod environment..."
-          databricks bundle validate -t prod -p PROD
+          echo "📋 Configuration Summary:"
+          databricks bundle validate -t prod -p PROD || {
+            echo "❌ Validation failed!"
+            exit 1
+          }
 
   # Deploy to Dev (automatic on develop branch)
   deploy-dev:

@@ -20,3 +20,6 @@ targets:
       # Storage paths (S3 for AWS Databricks)
       checkpoint_location: "s3://your-bucket/dev/checkpoints"  # Replace with your S3 bucket
       data_location: "s3://your-bucket/dev/data"
+
+      # SQL Warehouse ID (get from Databricks workspace: SQL Warehouses page)
+      sql_warehouse_id: "your-dev-sql-warehouse-id"

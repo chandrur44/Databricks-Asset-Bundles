@@ -83,6 +83,11 @@ variables:
     description: "Enable spot instances for cost savings"
     default: false
 
+  # SQL Warehouse configuration
+  sql_warehouse_id:
+    description: "SQL Warehouse ID for SQL tasks (get from Databricks workspace)"
+    default: "your-sql-warehouse-id"
+
 # Targets for different environments
 targets:
   # Development environment

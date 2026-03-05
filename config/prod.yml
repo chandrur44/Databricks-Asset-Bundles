@@ -21,6 +21,9 @@ targets:
       checkpoint_location: "s3://your-bucket/prod/checkpoints"  # Replace with your S3 bucket
       data_location: "s3://your-bucket/prod/data"
 
+      # SQL Warehouse ID (get from Databricks workspace: SQL Warehouses page)
+      sql_warehouse_id: "your-prod-sql-warehouse-id"
+
       # Production-specific settings
       enable_autoscaling: true
       enable_spot_instances: false
